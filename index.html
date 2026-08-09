@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fuel">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<title>Fuel · 64 → 60</title>
+<style>
+  :root{
+    color-scheme: light;
+    --page:#f9f9f7; --surface-1:#fcfcfb;
+    --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --line:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --pro:#2a78d6; --carb:#eb6834; --fat:#1baf7a;
+    --big:#2a78d6; --mid:#5598e7; --low:#86b6ef;
+    --warn:#fab219; --good:#0ca30c;
+    --wash:rgba(42,120,214,.08); --washw:rgba(250,178,25,.12);
+  }
+  @media (prefers-color-scheme: dark){ :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface-1:#1a1a19;
+    --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --line:#383835; --border:rgba(255,255,255,0.10);
+    --pro:#3987e5; --carb:#d95926; --fat:#199e70;
+    --big:#3987e5; --mid:#256abf; --low:#184f95;
+    --wash:rgba(57,135,229,.14); --washw:rgba(250,178,25,.14);
+  }}
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --page:#0d0d0d; --surface-1:#1a1a19;
+    --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --line:#383835; --border:rgba(255,255,255,0.10);
+    --pro:#3987e5; --carb:#d95926; --fat:#199e70;
+    --big:#3987e5; --mid:#256abf; --low:#184f95;
+    --wash:rgba(57,135,229,.14); --washw:rgba(250,178,25,.14);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  body{margin:0; background:var(--page); color:var(--ink); font-size:16px; line-height:1.45;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    padding:0 13px max(30px,env(safe-area-inset-bottom)); max-width:560px; margin-inline:auto}
+
+  header{display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:max(12px,env(safe-area-inset-top)) 0 8px}
+  h1{font-size:17px; margin:0; letter-spacing:-.01em}
+  .sub{color:var(--ink2); font-size:12.5px; margin:1px 0 0}
+  button{font:inherit; color:inherit; background:none; border:1px solid var(--border);
+    border-radius:9px; padding:6px 10px; cursor:pointer}
+  .primary{background:var(--pro); color:#fff; border-color:var(--pro); font-weight:620}
+
+  /* tabs */
+  .tabs{position:sticky; top:0; z-index:20; display:grid; grid-template-columns:repeat(4,1fr);
+    gap:4px; padding:6px; margin:0 0 14px; background:var(--surface-1);
+    border:1px solid var(--border); border-radius:13px}
+  .tabs button{border:none; padding:8px 2px; font-size:13px; font-weight:600; border-radius:9px;
+    color:var(--ink2)}
+  .tabs button[aria-selected="true"]{background:var(--pro); color:#fff}
+  [role=tabpanel][hidden]{display:none}
+
+  h2{font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted);
+    margin:20px 0 7px; font-weight:600}
+  .card{background:var(--surface-1); border:1px solid var(--border); border-radius:14px; padding:14px}
+
+  /* today */
+  .todaywrap{display:flex; align-items:center; gap:14px}
+  .kcal{flex:1 1 auto; min-width:0}
+  .pill{display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; padding:3px 9px; border-radius:999px; color:#fff}
+  .n{font-size:44px; font-weight:660; letter-spacing:-.035em; line-height:1.05; margin-top:5px}
+  .n small{font-size:14px; font-weight:500; color:var(--ink2); letter-spacing:0}
+  .donut{flex:0 0 auto; width:92px; height:92px}
+  .mrow{display:flex; gap:7px; margin-top:13px}
+  .m{flex:1; border-radius:11px; padding:8px 9px; color:#fff}
+  .m .k{font-size:10px; text-transform:uppercase; letter-spacing:.06em; opacity:.92; font-weight:600}
+  .m .v{font-size:19px; font-weight:670; letter-spacing:-.02em; line-height:1.15}
+  .m .s{font-size:10px; opacity:.9}
+  .days{display:flex; gap:4px; margin-top:13px}
+  .days button{flex:1; padding:7px 0; font-size:12px; font-weight:600; text-align:center}
+  .days button[aria-pressed="true"]{background:var(--pro); color:#fff; border-color:var(--pro)}
+  .foot{font-size:12.5px; color:var(--ink2); margin:11px 0 0}
+
+  /* progress bar */
+  .prog{height:11px; border-radius:6px; background:var(--grid); position:relative; overflow:hidden; margin:9px 0 6px}
+  .prog i{position:absolute; inset:0 auto 0 0; background:var(--pro); border-radius:6px}
+  .plabels{display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted)}
+
+  /* logging */
+  .logrow{display:flex; gap:7px}
+  input[type=number],input[type=date]{font:inherit; color:var(--ink); background:var(--page);
+    border:1px solid var(--border); border-radius:10px; padding:9px 10px; min-width:0;
+    font-variant-numeric:tabular-nums}
+  input[type=number]{flex:1 1 auto; font-size:19px; font-weight:640; text-align:center}
+  input[type=date]{flex:0 1 140px; font-size:13px; color:var(--ink2)}
+  .tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:12px}
+  .tile{background:var(--page); border:1px solid var(--border); border-radius:11px; padding:9px}
+  .tile .k{font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; line-height:1.3}
+  .tile .v{font-size:18px; font-weight:650; letter-spacing:-.02em; font-variant-numeric:tabular-nums; margin-top:1px}
+  .tile .d{font-size:10.5px; color:var(--ink2); line-height:1.3}
+  .verdict{margin-top:12px; border-radius:11px; padding:10px 12px; font-size:13px;
+    background:var(--wash); border-left:3px solid var(--pro)}
+  .verdict.hold{background:rgba(12,163,12,.09); border-left-color:var(--good)}
+  .verdict.up,.verdict.down{background:var(--washw); border-left-color:var(--warn)}
+  .verdict b{display:block; margin-bottom:2px; font-size:13.5px}
+  .entries{max-height:190px; overflow:auto; margin-top:8px}
+  .del{border:none; color:var(--muted); padding:2px 6px; font-size:16px; line-height:1}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px; font-variant-numeric:tabular-nums}
+  th{text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--muted); font-weight:600; padding:0 0 6px}
+  td{padding:7px 0; border-top:1px solid var(--grid)}
+  td.r,th.r{text-align:right}
+  tr.now td{background:var(--wash)}
+  .dim{color:var(--ink2)}
+  .dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px; vertical-align:1px}
+
+  /* phases */
+  .ph{border-radius:12px; padding:12px 13px; margin-bottom:8px; background:var(--wash);
+    border-left:4px solid var(--pro)}
+  .ph.race{background:var(--washw); border-left-color:var(--warn)}
+  .ph h3{margin:0; font-size:14.5px; font-weight:650}
+  .ph .big{font-size:23px; font-weight:670; letter-spacing:-.02em; margin:3px 0 1px;
+    font-variant-numeric:tabular-nums}
+  .ph p{margin:3px 0 0; font-size:12.5px; color:var(--ink2)}
+
+  /* comp bars */
+  .comp{margin-top:4px}
+  .comp .lab{display:flex; justify-content:space-between; font-size:12.5px; margin:11px 0 4px}
+  .comp .lab b{font-variant-numeric:tabular-nums}
+  .stack{display:flex; height:22px; border-radius:6px; overflow:hidden; gap:2px}
+  .stack i{display:block}
+  .stack .f{background:var(--carb)} .stack .l{background:var(--pro)}
+  .key{display:flex; gap:13px; font-size:11.5px; color:var(--ink2); margin-top:9px}
+  .key span{display:inline-flex; align-items:center; gap:5px}
+  .key i{width:10px; height:10px; border-radius:3px}
+
+  /* chart */
+  figure{margin:0}
+  figcaption{font-size:12.5px; color:var(--ink2); margin:0 0 8px}
+  .legend{display:flex; flex-wrap:wrap; gap:12px; margin:0 0 6px; font-size:11.5px; color:var(--ink2)}
+  .legend span{display:inline-flex; align-items:center; gap:5px}
+  .sw{width:15px; height:2px; border-radius:1px; background:var(--pro); flex:none}
+  .sw.dash{background:none; border-top:2px dashed var(--line); height:0}
+  .sw.pt{width:8px; height:8px; border-radius:50%; background:var(--low)}
+  .chartwrap{position:relative; touch-action:pan-y}
+  svg{display:block; width:100%; height:auto; overflow:visible}
+  .tip{position:absolute; pointer-events:none; opacity:0; transition:opacity .1s;
+    background:var(--surface-1); border:1px solid var(--border); border-radius:9px;
+    padding:6px 9px; font-size:12px; line-height:1.4; white-space:nowrap;
+    box-shadow:0 4px 14px rgba(0,0,0,.14); transform:translate(-50%,-115%); z-index:5}
+  .tip b{font-variant-numeric:tabular-nums}
+
+  .rule{display:flex; gap:11px; padding:11px 0; border-top:1px solid var(--grid); font-size:13px}
+  .rule:first-child{border-top:none}
+  .rule i{flex:none; width:9px; height:9px; border-radius:50%; margin-top:6px; background:var(--warn)}
+  .rule b{display:block}
+  details{margin-top:11px} summary{cursor:pointer; color:var(--ink2); font-size:12.5px}
+  textarea{width:100%; min-height:74px; font:11.5px/1.4 ui-monospace,Menlo,Consolas,monospace;
+    color:var(--ink); background:var(--page); border:1px solid var(--border);
+    border-radius:9px; padding:8px; margin-top:8px; resize:vertical}
+  .note{font-size:12px; color:var(--ink2); margin:9px 0 0}
+  .btnrow{display:flex; gap:7px; margin-top:8px; flex-wrap:wrap}
+  .btnrow button{font-size:12.5px}
+  footer{margin-top:26px; font-size:11px; color:var(--muted); text-align:center; line-height:1.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Fuel · 64 → 60 kg</h1>
+    <p class="sub" id="stamp">10 Aug – 1 Nov 2026</p>
+  </div>
+  <button id="theme" aria-label="Toggle light and dark">◐</button>
+</header>
+
+<div class="tabs" role="tablist">
+  <button role="tab" id="tab-today"  aria-selected="true"  aria-controls="p-today">Today</button>
+  <button role="tab" id="tab-weight" aria-selected="false" aria-controls="p-weight">Weight</button>
+  <button role="tab" id="tab-plan"   aria-selected="false" aria-controls="p-plan">Plan</button>
+  <button role="tab" id="tab-body"   aria-selected="false" aria-controls="p-body">Body</button>
+</div>
+
+<!-- ───────── TODAY ───────── -->
+<section role="tabpanel" id="p-today" aria-labelledby="tab-today">
+  <div class="card">
+    <div class="todaywrap">
+      <div class="kcal">
+        <span class="pill" id="t-tier">—</span>
+        <div class="n" id="t-kcal">—<small> kcal</small></div>
+        <p class="sub" id="t-ctx">—</p>
+      </div>
+      <svg class="donut" viewBox="0 0 100 100" id="donut" role="img" aria-label="Share of today's calories from protein, carbs and fat"></svg>
+    </div>
+    <div class="mrow">
+      <div class="m" style="background:var(--pro)"><div class="k">Protein</div><div class="v" id="t-p">—</div><div class="s" id="t-ps">—</div></div>
+      <div class="m" style="background:var(--carb)"><div class="k">Carbs</div><div class="v" id="t-c">—</div><div class="s" id="t-cs">—</div></div>
+      <div class="m" style="background:var(--fat)"><div class="k">Fat</div><div class="v" id="t-f">—</div><div class="s" id="t-fs">—</div></div>
+    </div>
+    <div class="days" id="daysel" role="group" aria-label="Pick a day"></div>
+    <p class="foot" id="t-note"></p>
+  </div>
+
+  <h2>Where you are</h2>
+  <div class="card">
+    <div class="prog"><i id="prog-fill" style="width:0%"></i></div>
+    <div class="plabels"><span>64.0 start</span><span id="prog-now">—</span><span>60.0 goal</span></div>
+  </div>
+</section>
+
+<!-- ───────── WEIGHT ───────── -->
+<section role="tabpanel" id="p-weight" aria-labelledby="tab-weight" hidden>
+  <div class="card">
+    <div class="logrow">
+      <input type="number" id="w-kg" inputmode="decimal" step="0.1" min="40" max="120" placeholder="63.4" aria-label="Weight in kilograms">
+      <input type="date" id="w-date" aria-label="Date">
+      <button class="primary" id="w-save">Save</button>
+    </div>
+    <p class="note" id="w-msg" style="min-height:1.1em"></p>
+    <div class="tiles">
+      <div class="tile"><div class="k">7-day avg</div><div class="v" id="s-avg">—</div><div class="d" id="s-avg-d">no data yet</div></div>
+      <div class="tile"><div class="k">Trend</div><div class="v" id="s-trend">—</div><div class="d" id="s-trend-d">needs ~2 weeks</div></div>
+      <div class="tile"><div class="k">vs plan</div><div class="v" id="s-vs">—</div><div class="d" id="s-vs-d">—</div></div>
+    </div>
+    <div class="verdict" id="verdict"><b>Keep logging</b>Needs about two weeks of weights before it can say anything useful.</div>
+  </div>
+
+  <h2>Progress</h2>
+  <div class="card">
+    <figure>
+      <div class="legend">
+        <span><i class="sw"></i>7-day average</span>
+        <span><i class="sw pt"></i>Weigh-in</span>
+        <span><i class="sw dash"></i>Plan</span>
+      </div>
+      <div class="chartwrap" id="cw">
+        <svg id="chart" viewBox="0 0 340 190" role="img" aria-label="Your logged weight against the plan line, which falls from 64.0 kg on 10 August to 59.8 kg on 1 November and runs flat through race week."></svg>
+        <div class="tip" id="tip"></div>
+      </div>
+      <figcaption>Judge yourself against the average line, never a single morning.</figcaption>
+    </figure>
+    <details><summary id="ent-sum">Entries</summary>
+      <div class="entries"><table><tbody id="entbody"></tbody></table></div>
+    </details>
+    <details><summary>Backup / restore</summary>
+      <p class="note">Saved on this device only. Keep a copy of this code somewhere safe.</p>
+      <textarea id="io" spellcheck="false" aria-label="Backup code"></textarea>
+      <div class="btnrow"><button id="io-copy">Copy</button><button id="io-load">Restore</button><button id="io-clear">Erase all</button></div>
+    </details>
+  </div>
+</section>
+
+<!-- ───────── PLAN ───────── -->
+<section role="tabpanel" id="p-plan" aria-labelledby="tab-plan" hidden>
+  <div class="card" id="phases"></div>
+
+  <h2>Your week</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Day</th><th>Session</th><th class="r">Burn</th><th class="r">Eat</th></tr></thead>
+      <tbody id="weekbody"></tbody>
+    </table>
+    <p class="note" id="weeksum"></p>
+  </div>
+
+  <h2>Week by week</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Week</th><th class="r">Eat/day</th><th class="r">Plan</th><th class="r">Actual</th></tr></thead>
+      <tbody id="projbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ───────── BODY ───────── -->
+<section role="tabpanel" id="p-body" aria-labelledby="tab-body" hidden>
+  <div class="card">
+    <div class="comp">
+      <div class="lab"><span>Now · 9 May DEXA</span><b>64.4 kg · 27.5% fat</b></div>
+      <div class="stack"><i class="f" style="width:27.5%"></i><i class="l" style="width:72.5%"></i></div>
+      <div class="lab"><span>Projected at 60 kg</span><b>60.0 kg · 23.1% fat</b></div>
+      <div class="stack"><i class="f" style="width:23.1%"></i><i class="l" style="width:76.9%"></i></div>
+      <div class="key"><span><i style="background:var(--carb)"></i>Fat mass</span><span><i style="background:var(--pro)"></i>Lean + bone</span></div>
+    </div>
+    <table style="margin-top:16px">
+      <thead><tr><th>Measure</th><th class="r">Now</th><th class="r">At 60 kg</th></tr></thead>
+      <tbody>
+        <tr><td>Fat mass</td><td class="r dim">17.7 kg</td><td class="r"><strong>13.9 kg</strong></td></tr>
+        <tr><td>Lean + bone</td><td class="r dim">46.7 kg</td><td class="r"><strong>46.1 kg</strong></td></tr>
+        <tr><td>Body fat</td><td class="r dim">27.5 %</td><td class="r"><strong>23.1 %</strong></td></tr>
+        <tr><td>BMI</td><td class="r dim">22.0</td><td class="r"><strong>20.6</strong></td></tr>
+      </tbody>
+    </table>
+    <p class="note">Assumes ~87% of the loss is fat — true only if you hit 130 g protein and keep both lifts.</p>
+  </div>
+
+  <h2>Guardrails</h2>
+  <div class="card">
+    <div class="rule"><i></i><div><b>Floor: 1,450 kcal</b>Your RMR is ~1,384. Never eat under this on any day.</div></div>
+    <div class="rule"><i></i><div><b>Protect the bone gains</b>T-score −1.4 → −0.5 since 2023. Under-fuelling is what stalls that.</div></div>
+    <div class="rule"><i></i><div><b>Phase B is a 3-week push</b>Energy availability sits at 28 — under the 30 line. Not a place to live.</div></div>
+    <div class="rule"><i style="background:var(--good)"></i><div><b>Back off to Phase A if</b>runs feel flat two weeks running, sleep goes, you're cold and irritable, you get sick, or your cycle shifts.</div></div>
+  </div>
+
+  <h2>How the app adjusts</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Trend (14–28 days)</th><th class="r">Then</th></tr></thead>
+      <tbody>
+        <tr><td><span class="dot" style="background:var(--warn)"></span>Under 0.2 kg/wk</td><td class="r">−150 kcal</td></tr>
+        <tr><td><span class="dot" style="background:var(--good)"></span>0.2 – 0.6 kg/wk</td><td class="r">Hold</td></tr>
+        <tr><td><span class="dot" style="background:var(--warn)"></span>Over 0.6 kg/wk</td><td class="r">+150 kcal</td></tr>
+      </tbody>
+    </table>
+    <p class="note">It only calls a change once the error bar clears the line — daily weight carries ~0.35 kg of noise, so two weeks often can't tell 0.1 from 0.3 kg/wk.</p>
+  </div>
+
+  <footer>
+    From your Physique Science DEXA, 9 May 2026.<br>
+    RMR cross-checked: Katch-McArdle 1,378 · Mifflin-St Jeor 1,390.<br>
+    General nutrition guidance, not clinical advice.
+  </footer>
+</section>
+
+<script>
+(function(){
+"use strict";
+var FFM=46.69, EX_DAY=301, KEY="bc-fuel-log-v1";
+
+var WEEK=[
+  {d:"Mon",s:"Netball",         burn:2209,tier:"BIG"},
+  {d:"Tue",s:"Strength + walk", burn:2032,tier:"MID"},
+  {d:"Wed",s:"Run ~7 km",       burn:2175,tier:"BIG"},
+  {d:"Thu",s:"Walk 30 min",     burn:1856,tier:"LOW"},
+  {d:"Fri",s:"Strength + walk", burn:2032,tier:"MID"},
+  {d:"Sat",s:"Long run ~10 km", burn:2348,tier:"BIG"},
+  {d:"Sun",s:"Rest / walk",     burn:1856,tier:"LOW"}];
+var TIERS={
+  A:{BIG:{k:1850,p:130,f:55,c:209},MID:{k:1700,p:130,f:55,c:171},LOW:{k:1500,p:130,f:50,c:132}},
+  B:{BIG:{k:1750,p:130,f:55,c:184},MID:{k:1600,p:130,f:55,c:146},LOW:{k:1450,p:130,f:50,c:120}}};
+var RACE=[{k:2050,p:125,f:60,c:253},{k:2000,p:125,f:60,c:240},{k:2050,p:125,f:60,c:253},
+  {k:2100,p:125,f:60,c:265},{k:2350,p:120,f:55,c:344},{k:2350,p:120,f:55,c:344},
+  {k:2300,p:120,f:55,c:331}];
+var RACE_LBL=["Taper","Taper","Taper","Load","Carb load","Carb load","Race day"];
+var TIERCOL={BIG:"var(--big)",MID:"var(--mid)",LOW:"var(--low)"};
+
+var PROJ=[
+  {w:1,end:"16 Aug",ph:"A",eat:1707,kg:63.67},{w:2,end:"23 Aug",ph:"A",eat:1707,kg:63.34},
+  {w:3,end:"30 Aug",ph:"A",eat:1707,kg:63.00},{w:4,end:"6 Sep", ph:"A",eat:1707,kg:62.67},
+  {w:5,end:"13 Sep",ph:"R",eat:2171,kg:62.67},{w:6,end:"20 Sep",ph:"B",eat:1621,kg:62.26},
+  {w:7,end:"27 Sep",ph:"B",eat:1621,kg:61.85},{w:8,end:"4 Oct", ph:"B",eat:1621,kg:61.44},
+  {w:9,end:"11 Oct",ph:"B",eat:1621,kg:61.03},{w:10,end:"18 Oct",ph:"B",eat:1621,kg:60.62},
+  {w:11,end:"25 Oct",ph:"B",eat:1621,kg:60.21},{w:12,end:"1 Nov",ph:"B",eat:1621,kg:59.80}];
+var PLAN_KG=[64.00].concat(PROJ.map(function(p){return p.kg;}));
+var START=new Date(2026,7,10), TOTAL=84;
+
+function iso(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+function parseISO(s){var a=s.split("-");return new Date(+a[0],+a[1]-1,+a[2]);}
+function dayIndex(d){return Math.round((d-START)/86400000);}
+function shortDate(d){return d.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];}
+function planAtDay(x){ if(x<=0)return PLAN_KG[0]; if(x>=TOTAL)return PLAN_KG[12];
+  var w=x/7,i=Math.floor(w); return PLAN_KG[i]+(PLAN_KG[i+1]-PLAN_KG[i])*(w-i); }
+
+/* storage — never throws */
+var mem=null, canPersist=true;
+function loadLog(){ if(mem)return mem; var raw=null;
+  try{ raw=window.localStorage.getItem(KEY); }catch(e){ canPersist=false; }
+  try{ mem=raw?JSON.parse(raw):{}; }catch(e){ mem={}; } return mem; }
+function saveLog(){ try{ window.localStorage.setItem(KEY,JSON.stringify(mem)); }catch(e){ canPersist=false; } }
+
+function entries(){ var g=loadLog();
+  return Object.keys(g).sort().map(function(k){ var d=parseISO(k);
+    return {date:k,d:d,kg:g[k],x:dayIndex(d)}; }); }
+function rolling(list){ var out=[];
+  list.forEach(function(e){
+    var win=list.filter(function(o){return o.x<=e.x&&o.x>e.x-7;});
+    if(win.length>=3) out.push({x:e.x,kg:win.reduce(function(s,o){return s+o.kg;},0)/win.length,n:win.length});
+  }); return out; }
+/* OLS slope in kg/week with its standard error, over the longest window (14–28 d) */
+function trend(list){
+  if(list.length<10) return null;
+  var last=list[list.length-1], span=Math.min(28,last.x-list[0].x+1);
+  if(span<14) return null;
+  var win=list.filter(function(o){return o.x>last.x-span;});
+  if(win.length<10) return null;
+  var n=win.length,sx=0,sy=0,sxy=0,sxx=0;
+  win.forEach(function(o){sx+=o.x;sy+=o.kg;sxy+=o.x*o.kg;sxx+=o.x*o.x;});
+  var den=n*sxx-sx*sx; if(!den) return null;
+  var slope=(n*sxy-sx*sy)/den, icpt=(sy-slope*sx)/n, ss=0;
+  win.forEach(function(o){var r=o.kg-(slope*o.x+icpt); ss+=r*r;});
+  return {perWeek:slope*7, sePerWeek:(n>2?Math.sqrt((ss/(n-2))*n/den):0)*7, n:n, span:span};
+}
+
+var now=new Date();
+var wn=(function(){var d=Math.floor((now-START)/86400000);return d<0?0:Math.min(12,Math.floor(d/7)+1);})();
+var todayIdx=(now.getDay()+6)%7, sel=todayIdx;
+function phaseOf(w){ return w<=0?"A":PROJ[w-1].ph; }
+
+/* ---- tabs ---- */
+var TABS=["today","weight","plan","body"];
+function showTab(name){
+  TABS.forEach(function(t){
+    var b=document.getElementById("tab-"+t), p=document.getElementById("p-"+t);
+    var on = t===name;
+    b.setAttribute("aria-selected", on?"true":"false");
+    p.hidden = !on;
+  });
+  window.scrollTo(0,0);
+}
+TABS.forEach(function(t){ document.getElementById("tab-"+t).addEventListener("click",function(){ showTab(t); }); });
+
+/* ---- donut ---- */
+function drawDonut(t){
+  var d=document.getElementById("donut"), NS="http://www.w3.org/2000/svg";
+  while(d.firstChild) d.removeChild(d.firstChild);
+  var parts=[[t.p*4,"var(--pro)"],[t.c*4,"var(--carb)"],[t.f*9,"var(--fat)"]];
+  var tot=parts.reduce(function(s,p){return s+p[0];},0), R=38, C=2*Math.PI*R, off=0;
+  parts.forEach(function(p){
+    var len=p[0]/tot*C;
+    var c=document.createElementNS(NS,"circle");
+    c.setAttribute("cx",50); c.setAttribute("cy",50); c.setAttribute("r",R);
+    c.setAttribute("fill","none"); c.setAttribute("stroke",p[1]); c.setAttribute("stroke-width",15);
+    c.setAttribute("stroke-dasharray",Math.max(0,len-2.5)+" "+(C-Math.max(0,len-2.5)));
+    c.setAttribute("stroke-dashoffset",-off);
+    c.setAttribute("transform","rotate(-90 50 50)");
+    d.appendChild(c); off+=len;
+  });
+  var pct=Math.round(t.p*4/tot*100);
+  var tx=document.createElementNS(NS,"text");
+  tx.setAttribute("x",50); tx.setAttribute("y",47); tx.setAttribute("text-anchor","middle");
+  tx.setAttribute("font-size",19); tx.setAttribute("font-weight",670); tx.setAttribute("fill","var(--ink)");
+  tx.textContent=pct+"%"; d.appendChild(tx);
+  var t2=document.createElementNS(NS,"text");
+  t2.setAttribute("x",50); t2.setAttribute("y",62); t2.setAttribute("text-anchor","middle");
+  t2.setAttribute("font-size",10); t2.setAttribute("fill","var(--muted)");
+  t2.textContent="protein"; d.appendChild(t2);
+}
+
+function renderToday(){
+  var ph=phaseOf(wn), row=WEEK[sel], t, pill=document.getElementById("t-tier");
+  if(ph==="R"){
+    t=RACE[sel]; pill.textContent=RACE_LBL[sel]; pill.style.background="var(--warn)"; pill.style.color="#0b0b0b";
+    document.getElementById("t-note").textContent="Race week — eating to maintain. The scale will jump 0.5–1 kg from carbs and water. That's fuel, not fat.";
+  } else {
+    t=TIERS[ph][row.tier]; pill.textContent=row.tier+" day"; pill.style.background=TIERCOL[row.tier]; pill.style.color="#fff";
+    document.getElementById("t-note").textContent="Burn ≈ "+row.burn.toLocaleString()+" · deficit ≈ "+(row.burn-t.k).toLocaleString()+" kcal.";
+  }
+  document.getElementById("t-kcal").innerHTML=t.k.toLocaleString()+"<small> kcal</small>";
+  document.getElementById("t-p").textContent=t.p+" g";
+  document.getElementById("t-c").textContent=t.c+" g";
+  document.getElementById("t-f").textContent=t.f+" g";
+  document.getElementById("t-ps").textContent=(t.p*4)+" kcal";
+  document.getElementById("t-cs").textContent=(t.c*4)+" kcal";
+  document.getElementById("t-fs").textContent=(t.f*9)+" kcal";
+  document.getElementById("t-ctx").textContent=row.d+" · "+row.s+(sel===todayIdx?"":"  (preview)");
+  Array.prototype.forEach.call(document.querySelectorAll("#daysel button"),function(b,i){
+    b.setAttribute("aria-pressed",i===sel?"true":"false"); });
+  drawDonut(t); drawWeek(ph);
+}
+var ds=document.getElementById("daysel");
+WEEK.forEach(function(r,i){
+  var b=document.createElement("button"); b.type="button"; b.textContent=r.d;
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){ sel=i; renderToday(); });
+  ds.appendChild(b);
+});
+function drawWeek(ph){
+  var tb=document.getElementById("weekbody"); tb.innerHTML=""; var eat=0,burn=0;
+  WEEK.forEach(function(r,i){
+    var k=(ph==="R")?RACE[i].k:TIERS[ph][r.tier].k; eat+=k; burn+=r.burn;
+    var tr=document.createElement("tr"); if(i===todayIdx) tr.className="now";
+    tr.innerHTML="<td><span class='dot' style='background:"+TIERCOL[r.tier]+"'></span><strong>"+r.d+
+      "</strong></td><td class='dim'>"+r.s+"</td><td class='r dim'>"+r.burn.toLocaleString()+
+      "</td><td class='r'><strong>"+k.toLocaleString()+"</strong></td>";
+    tb.appendChild(tr);
+  });
+  var def=burn-eat;
+  document.getElementById("weeksum").textContent="Average "+Math.round(eat/7).toLocaleString()+
+    " kcal/day · weekly "+(def>=0?"deficit ":"surplus ")+Math.abs(def).toLocaleString()+" kcal ("+
+    (def>=0?"−":"+")+(Math.abs(def)/7700).toFixed(2)+" kg) · energy availability "+
+    Math.round((eat/7-EX_DAY)/FFM)+" kcal/kg lean.";
+}
+
+/* ---- phases ---- */
+[["Phase A · weeks 1–4","1,707","10 Aug – 6 Sep","~0.33 kg/wk. Moderate cut while the 10 k build is still on.",false],
+ ["Race week · week 5","2,171","7 – 13 Sep","Maintenance. B2B is Sunday 13th — you don't cut into a race.",true],
+ ["Phase B · weeks 6–12","1,621","14 Sep – 1 Nov","~0.41 kg/wk. You cross 60.0 kg around 29 Oct.",false]
+].forEach(function(p){
+  var d=document.createElement("div"); d.className="ph"+(p[4]?" race":"");
+  d.innerHTML="<h3>"+p[0]+"</h3><div class='big'>"+p[1]+" <span style='font-size:13px;font-weight:500;color:var(--ink2)'>kcal/day</span></div><p>"+p[2]+" · "+p[3]+"</p>";
+  document.getElementById("phases").appendChild(d);
+});
+
+/* ---- chart ---- */
+var W=340,H=190,ML=28,MR=26,MT=12,MB=24;
+var svg=document.getElementById("chart"),NS="http://www.w3.org/2000/svg";
+function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+var minY,maxY,cur,hd;
+function X(x){return ML+Math.max(0,Math.min(TOTAL,x))*(W-ML-MR)/TOTAL;}
+function Y(v){return MT+(maxY-v)*(H-MT-MB)/(maxY-minY);}
+function drawChart(list,roll){
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  var vals=[59.6,64.2].concat(list.map(function(e){return e.kg;}));
+  minY=Math.min.apply(null,vals)-0.3; maxY=Math.max.apply(null,vals)+0.3;
+  for(var v=Math.ceil(minY);v<=Math.floor(maxY);v++){
+    svg.appendChild(el("line",{x1:ML,x2:W-MR,y1:Y(v),y2:Y(v),stroke:"var(--grid)","stroke-width":1}));
+    var t=el("text",{x:ML-6,y:Y(v)+4,"text-anchor":"end",fill:"var(--muted)","font-size":10}); t.textContent=v;
+    svg.appendChild(t);
+  }
+  svg.appendChild(el("line",{x1:ML,x2:W-MR,y1:Y(60),y2:Y(60),stroke:"var(--line)","stroke-width":1.5,"stroke-dasharray":"1 3"}));
+  var gl=el("text",{x:ML+4,y:Y(60)-5,fill:"var(--ink2)","font-size":9.5,"font-weight":600}); gl.textContent="goal 60.0"; svg.appendChild(gl);
+  var rx=X(35);
+  svg.appendChild(el("line",{x1:rx,x2:rx,y1:MT,y2:H-MB,stroke:"var(--warn)","stroke-width":1.5,"stroke-dasharray":"3 3"}));
+  var rl=el("text",{x:rx+4,y:MT+9,fill:"var(--warn)","font-size":9.5,"font-weight":700}); rl.textContent="B2B"; svg.appendChild(rl);
+  var pd=PLAN_KG.map(function(kg,i){return (i?"L":"M")+X(i*7).toFixed(1)+" "+Y(kg).toFixed(1);}).join(" ");
+  svg.appendChild(el("path",{d:pd,fill:"none",stroke:"var(--line)","stroke-width":2,"stroke-dasharray":"5 4","stroke-linecap":"round"}));
+  var pl=el("text",{x:X(84)+4,y:Y(PLAN_KG[12])+4,fill:"var(--ink2)","font-size":9.5,"font-weight":600}); pl.textContent="plan"; svg.appendChild(pl);
+  list.forEach(function(e){ if(e.x>=-1&&e.x<=TOTAL+1)
+    svg.appendChild(el("circle",{cx:X(e.x),cy:Y(e.kg),r:2.6,fill:"var(--low)"})); });
+  if(roll.length>1){
+    var rd=roll.map(function(p,i){return (i?"L":"M")+X(p.x).toFixed(1)+" "+Y(p.kg).toFixed(1);}).join(" ");
+    svg.appendChild(el("path",{d:rd,fill:"none",stroke:"var(--pro)","stroke-width":2.5,"stroke-linecap":"round","stroke-linejoin":"round"}));
+    var last=roll[roll.length-1];
+    svg.appendChild(el("circle",{cx:X(last.x),cy:Y(last.kg),r:4.5,fill:"var(--pro)",stroke:"var(--surface-1)","stroke-width":2}));
+    var lt=el("text",{x:X(last.x),y:Y(last.kg)-9,"text-anchor":last.x>70?"end":"middle",fill:"var(--ink)","font-size":10,"font-weight":670});
+    lt.textContent=last.kg.toFixed(1); svg.appendChild(lt);
+  }
+  ["10 Aug","6 Sep","4 Oct","1 Nov"].forEach(function(lb,j){
+    var x=[0,28,56,84][j];
+    var t=el("text",{x:X(x),y:H-MB+14,"text-anchor":j===0?"start":(j===3?"end":"middle"),fill:"var(--muted)","font-size":9.5});
+    t.textContent=lb; svg.appendChild(t);
+  });
+  cur=el("line",{x1:0,x2:0,y1:MT,y2:H-MB,stroke:"var(--line)","stroke-width":1,opacity:0});
+  hd=el("circle",{r:5,fill:"var(--pro)",stroke:"var(--surface-1)","stroke-width":2,opacity:0});
+  svg.appendChild(cur); svg.appendChild(hd);
+}
+var tip=document.getElementById("tip"), cw=document.getElementById("cw");
+function hover(ev){
+  var list=entries(), roll=rolling(list), r=svg.getBoundingClientRect();
+  var cx=((ev.touches?ev.touches[0].clientX:ev.clientX)-r.left)/r.width*W;
+  var day=Math.max(0,Math.min(TOTAL,Math.round((cx-ML)/((W-ML-MR)/TOTAL))));
+  var d=new Date(START.getTime()+day*86400000), plan=planAtDay(day);
+  var act=list.filter(function(e){return e.x===day;})[0];
+  var rl=roll.filter(function(p){return p.x===day;})[0];
+  var y=rl?rl.kg:(act?act.kg:plan);
+  cur.setAttribute("x1",X(day)); cur.setAttribute("x2",X(day)); cur.setAttribute("opacity",1);
+  hd.setAttribute("cx",X(day)); hd.setAttribute("cy",Y(y)); hd.setAttribute("opacity",1);
+  var html=shortDate(d)+" · wk "+Math.min(12,Math.floor(day/7)+1)+"<br>Plan <b>"+plan.toFixed(2)+"</b>";
+  if(act) html+="<br>Weighed <b>"+act.kg.toFixed(1)+"</b>";
+  if(rl)  html+="<br>7-day avg <b>"+rl.kg.toFixed(2)+"</b>";
+  tip.innerHTML=html;
+  tip.style.left=(X(day)/W*r.width)+"px"; tip.style.top=(Y(y)/H*r.height)+"px"; tip.style.opacity=1;
+}
+function leave(){ if(cur){cur.setAttribute("opacity",0);hd.setAttribute("opacity",0);} tip.style.opacity=0; }
+cw.addEventListener("mousemove",hover); cw.addEventListener("mouseleave",leave);
+cw.addEventListener("touchstart",hover,{passive:true}); cw.addEventListener("touchmove",hover,{passive:true});
+cw.addEventListener("touchend",leave);
+
+/* ---- stats ---- */
+function setTile(id,v,d){ document.getElementById(id).textContent=v; document.getElementById(id+"-d").textContent=d; }
+function refresh(){
+  var list=entries(), roll=rolling(list);
+  drawChart(list,roll);
+
+  if(roll.length){ var l=roll[roll.length-1];
+    setTile("s-avg",l.kg.toFixed(2),"from "+l.n+" weigh-in"+(l.n===1?"":"s"));
+  } else setTile("s-avg","—",list.length?(3-list.length)+" more to start":"no data yet");
+
+  var tr=trend(list);
+  if(tr) setTile("s-trend",(tr.perWeek<=0?"−":"+")+Math.abs(tr.perWeek).toFixed(2),
+        "±"+tr.sePerWeek.toFixed(2)+" kg/wk · "+tr.span+" days");
+  else setTile("s-trend","—","needs ~2 weeks");
+
+  var cur7 = roll.length ? roll[roll.length-1].kg : null;
+  if(cur7!==null){ var diff=cur7-planAtDay(roll[roll.length-1].x);
+    setTile("s-vs",(diff<=0?"−":"+")+Math.abs(diff).toFixed(2), diff<=0?"kg ahead of plan":"kg behind plan");
+  } else setTile("s-vs","—","—");
+
+  // progress bar
+  var shown = cur7!==null ? cur7 : 64.0;
+  var pct = Math.max(0,Math.min(100,(64-shown)/4*100));
+  document.getElementById("prog-fill").style.width=pct.toFixed(1)+"%";
+  document.getElementById("prog-now").textContent =
+    cur7!==null ? shown.toFixed(1)+" kg · "+Math.round(pct)+"%" : "log a weight";
+
+  var v=document.getElementById("verdict"); v.className="verdict";
+  var lastX=list.length?list[list.length-1].x:-1;
+  var dataWk=lastX<0?0:Math.floor(lastX/7)+1;
+  var raceWk=tr&&lastX>=28&&(lastX-tr.span+1)<=34;
+  if(!tr){
+    v.innerHTML="<b>Keep logging</b>Needs about two weeks of weights before it can say anything useful."+
+      (list.length?" "+list.length+" so far.":"");
+  } else if(raceWk){ v.classList.add("hold");
+    v.innerHTML="<b>Race week is in this window</b>Carb loading adds 0.5–1 kg of water. Don't adjust off these numbers.";
+  } else if(dataWk<=2){ v.classList.add("hold");
+    v.innerHTML="<b>Too early to judge</b>Week 1–2 is inflated by water. Hold, and re-read from week 3.";
+  } else {
+    var loss=-tr.perWeek, se=tr.sePerWeek;
+    var rate=loss.toFixed(2)+" ± "+se.toFixed(2)+" kg/wk over "+tr.span+" days";
+    if(loss+se<0.2){ v.classList.add("down");
+      v.innerHTML="<b>Drop 150 kcal/day</b>"+rate+" — clearly under the floor. Take it off the BIG days. Don't touch protein.";
+    } else if(loss-se>0.6){ v.classList.add("up");
+      v.innerHTML="<b>Add 150 kcal/day</b>"+rate+" — faster than 0.6 is where lean mass goes with it. Add carbs around training.";
+    } else if(loss-se>=0.2&&loss+se<=0.6){ v.classList.add("hold");
+      v.innerHTML="<b>Hold — this is working</b>"+rate+", solidly in the band. Change nothing.";
+    } else { v.classList.add("hold");
+      v.innerHTML="<b>Hold — not enough signal yet</b>"+rate+". The error bar still straddles the line, so changing now is chasing noise.";
+    }
+  }
+
+  var eb=document.getElementById("entbody"); eb.innerHTML="";
+  list.slice().reverse().forEach(function(e){
+    var tr2=document.createElement("tr");
+    tr2.innerHTML="<td>"+shortDate(e.d)+"</td><td class='r'><strong>"+e.kg.toFixed(1)+"</strong> kg</td><td class='r' style='width:32px'></td>";
+    var b=document.createElement("button"); b.className="del"; b.type="button"; b.textContent="×";
+    b.setAttribute("aria-label","Delete "+e.date);
+    b.addEventListener("click",function(){ delete mem[e.date]; saveLog(); refresh(); });
+    tr2.lastChild.appendChild(b); eb.appendChild(tr2);
+  });
+  document.getElementById("ent-sum").textContent="Entries ("+list.length+")";
+
+  var pb=document.getElementById("projbody"); pb.innerHTML="";
+  PROJ.forEach(function(p){
+    var r2=roll.filter(function(o){return o.x<=p.w*7;}).pop();
+    var actual=(r2&&r2.x>p.w*7-7)?r2.kg.toFixed(2):"—";
+    var tr3=document.createElement("tr"); if(p.w===wn) tr3.className="now";
+    tr3.innerHTML="<td><span class='dot' style='background:"+(p.ph==="R"?"var(--warn)":"var(--pro)")+"'></span>W"+
+      p.w+" · "+p.end+"</td><td class='r dim'>"+p.eat.toLocaleString()+"</td><td class='r dim'>"+
+      p.kg.toFixed(2)+"</td><td class='r'><strong>"+actual+"</strong></td>";
+    pb.appendChild(tr3);
+  });
+  document.getElementById("io").value=JSON.stringify(loadLog());
+}
+
+/* ---- controls ---- */
+var kgIn=document.getElementById("w-kg"), dtIn=document.getElementById("w-date"), msg=document.getElementById("w-msg");
+dtIn.value=iso(now); dtIn.max=iso(now);
+function say(t){ msg.textContent=t; }
+document.getElementById("w-save").addEventListener("click",function(){
+  var v=parseFloat(kgIn.value);
+  if(!(v>=40&&v<=120)){ say("Enter a weight between 40 and 120 kg."); return; }
+  if(!dtIn.value){ say("Pick a date."); return; }
+  loadLog(); mem[dtIn.value]=Math.round(v*10)/10; saveLog(); kgIn.value="";
+  say(canPersist?"Saved "+(Math.round(v*10)/10).toFixed(1)+" kg for "+shortDate(parseISO(dtIn.value))+"."
+                :"Saved for this session only — this browser blocks storage. Use the backup code.");
+  refresh();
+});
+kgIn.addEventListener("keydown",function(e){ if(e.key==="Enter") document.getElementById("w-save").click(); });
+document.getElementById("io-copy").addEventListener("click",function(){
+  var ta=document.getElementById("io"); ta.select();
+  try{ document.execCommand("copy"); say("Backup code copied."); }catch(e){ say("Select and copy it manually."); }
+});
+document.getElementById("io-load").addEventListener("click",function(){
+  try{ var o=JSON.parse(document.getElementById("io").value),n=0,clean={};
+    for(var k in o){ if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&typeof o[k]==="number"&&o[k]>=40&&o[k]<=120){clean[k]=o[k];n++;} }
+    if(!n){ say("That code has no valid entries in it."); return; }
+    mem=clean; saveLog(); refresh(); say("Restored "+n+" entries.");
+  }catch(e){ say("That doesn't look like a valid backup code."); }
+});
+document.getElementById("io-clear").addEventListener("click",function(){
+  if(!Object.keys(loadLog()).length){ say("Nothing to erase."); return; }
+  mem={}; saveLog(); refresh(); say("All entries erased.");
+});
+document.getElementById("theme").addEventListener("click",function(){
+  var c=document.documentElement.getAttribute("data-theme");
+  var dark=c?c==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.setAttribute("data-theme",dark?"light":"dark");
+});
+
+if(wn>0) document.getElementById("stamp").textContent="Week "+wn+" of 12 · "+
+  (phaseOf(wn)==="R"?"race week":"Phase "+phaseOf(wn))+" · "+PROJ[wn-1].kg.toFixed(1)+" kg by "+PROJ[wn-1].end;
+
+renderToday(); refresh();
+window.__fuel={entries:entries,rolling:rolling,trend:trend,planAtDay:planAtDay,tab:showTab,
+  set:function(o){ mem=o; saveLog(); refresh(); }};
+})();
+</script>
+</body>
+</html>
