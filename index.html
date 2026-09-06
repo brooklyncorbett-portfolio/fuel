@@ -172,7 +172,7 @@
 <header>
   <div>
     <h1>Fuel · 64 → 60 kg</h1>
-    <p class="sub" id="stamp">10 Aug – 1 Nov 2026</p>
+    <p class="sub" id="stamp">7 Sep 2026 – 10 Jan 2027</p>
   </div>
   <button id="theme" aria-label="Toggle light and dark">◐</button>
 </header>
@@ -215,7 +215,7 @@
 <section role="tabpanel" id="p-weight" aria-labelledby="tab-weight" hidden>
   <div class="card">
     <div class="logrow">
-      <input type="number" id="w-kg" inputmode="decimal" step="0.1" min="40" max="120" placeholder="63.4" aria-label="Weight in kilograms">
+      <input type="number" id="w-kg" inputmode="decimal" step="0.01" min="40" max="120" placeholder="63.45" aria-label="Weight in kilograms">
       <input type="date" id="w-date" aria-label="Date">
       <button class="primary" id="w-save">Save</button>
     </div>
@@ -237,7 +237,7 @@
         <span><i class="sw dash"></i>Plan</span>
       </div>
       <div class="chartwrap" id="cw">
-        <svg id="chart" viewBox="0 0 340 190" role="img" aria-label="Your logged weight against the plan line, which falls from 64.0 kg on 10 August to 59.8 kg on 1 November and runs flat through race week."></svg>
+        <svg id="chart" viewBox="0 0 340 190" role="img" aria-label="Your logged weight against the plan line, which holds at 64.0 kg through race week and then falls to 59.9 kg by 10 January."></svg>
         <div class="tip" id="tip"></div>
       </div>
       <figcaption>Judge yourself against the average line, never a single morning.</figcaption>
@@ -299,10 +299,11 @@
 
   <h2>Guardrails</h2>
   <div class="card">
-    <div class="rule"><i></i><div><b>Floor: 1,450 kcal</b>Your RMR is ~1,384. Never eat under this on any day.</div></div>
+    <div class="rule"><i></i><div><b>Floor: 1,750 kcal</b>Your RMR is ~1,384. Nothing in this plan goes under 1,750 — not rest days, not the worst day. This is the number you said you can hold, so it is the number the plan is built on.</div></div>
     <div class="rule"><i></i><div><b>Protect the bone gains</b>T-score −1.4 → −0.5 since 2023. Under-fuelling is what stalls that.</div></div>
-    <div class="rule"><i></i><div><b>Phase B is a 3-week push</b>Energy availability sits at 28 — under the 30 line. Not a place to live.</div></div>
-    <div class="rule"><i style="background:var(--good)"></i><div><b>Back off to Phase A if</b>runs feel flat two weeks running, sleep goes, you're cold and irritable, you get sick, or your cycle shifts.</div></div>
+    <div class="rule"><i></i><div><b>Friday is a real rest day</b>No strength the day before either run. The one back-to-back left is Sunday's lift into Monday netball — keep that session upper-body led if your legs are still there.</div></div>
+    <div class="rule"><i></i><div><b>Built to be liveable</b>Energy availability is 32 kcal/kg lean — above the 30 line the whole way. The old plan ran at 28. That is the trade for the slower rate.</div></div>
+    <div class="rule"><i style="background:var(--good)"></i><div><b>Take a maintenance week if</b>runs feel flat two weeks running, sleep goes, you're cold and irritable, you get sick, or your cycle shifts. Eat ~2,070 for seven days, then pick the plan back up.</div></div>
   </div>
 
   <h2>How the app adjusts</h2>
@@ -310,16 +311,16 @@
     <table>
       <thead><tr><th>Trend (14–28 days)</th><th class="r">Then</th></tr></thead>
       <tbody>
-        <tr><td><span class="dot" style="background:var(--warn)"></span>Under 0.2 kg/wk</td><td class="r">−150 kcal</td></tr>
-        <tr><td><span class="dot" style="background:var(--good)"></span>0.2 – 0.6 kg/wk</td><td class="r">Hold</td></tr>
-        <tr><td><span class="dot" style="background:var(--warn)"></span>Over 0.6 kg/wk</td><td class="r">+150 kcal</td></tr>
+        <tr><td><span class="dot" style="background:var(--warn)"></span>Under 0.15 kg/wk</td><td class="r">More movement</td></tr>
+        <tr><td><span class="dot" style="background:var(--good)"></span>0.15 – 0.40 kg/wk</td><td class="r">Hold</td></tr>
+        <tr><td><span class="dot" style="background:var(--warn)"></span>Over 0.40 kg/wk</td><td class="r">+150 kcal</td></tr>
       </tbody>
     </table>
-    <p class="note">It only calls a change once the error bar clears the line — daily weight carries ~0.35 kg of noise, so two weeks often can't tell 0.1 from 0.3 kg/wk.</p>
+    <p class="note">Cutting food is no longer a lever — you are already at the floor. If the trend stalls, the plan adds a walk or flattens the BIG days to 1,750, never protein. It only calls a change once the error bar clears the line: daily weight carries ~0.35 kg of noise, so two weeks often can't tell 0.1 from 0.3 kg/wk.</p>
   </div>
 
   <footer>
-    From your Physique Science DEXA, 9 May 2026.<br>
+    From your Physique Science DEXA, 9 May 2026. Plan reset 7 Sep 2026.<br>
     RMR cross-checked: Katch-McArdle 1,378 · Mifflin-St Jeor 1,390.<br>
     General nutrition guidance, not clinical advice.
   </footer>
@@ -332,15 +333,14 @@ var FFM=46.69, EX_DAY=301, KEY="bc-fuel-log-v1";
 
 var WEEK=[
   {d:"Mon",s:"Netball",         burn:2209,tier:"BIG"},
-  {d:"Tue",s:"Strength + walk", burn:2032,tier:"MID"},
+  {d:"Tue",s:"Walk 30 min",     burn:1856,tier:"LOW"},
   {d:"Wed",s:"Run ~7 km",       burn:2175,tier:"BIG"},
-  {d:"Thu",s:"Walk 30 min",     burn:1856,tier:"LOW"},
-  {d:"Fri",s:"Strength + walk", burn:2032,tier:"MID"},
+  {d:"Thu",s:"Strength + walk", burn:2032,tier:"MID"},
+  {d:"Fri",s:"Rest / walk",     burn:1856,tier:"LOW"},
   {d:"Sat",s:"Long run ~10 km", burn:2348,tier:"BIG"},
-  {d:"Sun",s:"Rest / walk",     burn:1856,tier:"LOW"}];
+  {d:"Sun",s:"Strength + walk", burn:2032,tier:"MID"}];
 var TIERS={
-  A:{BIG:{k:1850,p:130,f:55,c:209},MID:{k:1700,p:130,f:55,c:171},LOW:{k:1500,p:130,f:50,c:132}},
-  B:{BIG:{k:1750,p:130,f:55,c:184},MID:{k:1600,p:130,f:55,c:146},LOW:{k:1450,p:130,f:50,c:120}}};
+  A:{BIG:{k:1850,p:130,f:60,c:198},MID:{k:1800,p:130,f:60,c:185},LOW:{k:1750,p:130,f:60,c:172}}};
 var RACE=[{k:2050,p:125,f:60,c:253},{k:2000,p:125,f:60,c:240},{k:2050,p:125,f:60,c:253},
   {k:2100,p:125,f:60,c:265},{k:2350,p:120,f:55,c:344},{k:2350,p:120,f:55,c:344},
   {k:2300,p:120,f:55,c:331}];
@@ -348,20 +348,23 @@ var RACE_LBL=["Taper","Taper","Taper","Load","Carb load","Carb load","Race day"]
 var TIERCOL={BIG:"var(--big)",MID:"var(--mid)",LOW:"var(--low)"};
 
 var PROJ=[
-  {w:1,end:"16 Aug",ph:"A",eat:1707,kg:63.67},{w:2,end:"23 Aug",ph:"A",eat:1707,kg:63.34},
-  {w:3,end:"30 Aug",ph:"A",eat:1707,kg:63.00},{w:4,end:"6 Sep", ph:"A",eat:1707,kg:62.67},
-  {w:5,end:"13 Sep",ph:"R",eat:2171,kg:62.67},{w:6,end:"20 Sep",ph:"B",eat:1621,kg:62.26},
-  {w:7,end:"27 Sep",ph:"B",eat:1621,kg:61.85},{w:8,end:"4 Oct", ph:"B",eat:1621,kg:61.44},
-  {w:9,end:"11 Oct",ph:"B",eat:1621,kg:61.03},{w:10,end:"18 Oct",ph:"B",eat:1621,kg:60.62},
-  {w:11,end:"25 Oct",ph:"B",eat:1621,kg:60.21},{w:12,end:"1 Nov",ph:"B",eat:1621,kg:59.80}];
+  {w:1, end:"13 Sep",ph:"R",eat:2171,kg:64.00},{w:2, end:"20 Sep",ph:"A",eat:1807,kg:63.76},
+  {w:3, end:"27 Sep",ph:"A",eat:1807,kg:63.52},{w:4, end:"4 Oct", ph:"A",eat:1807,kg:63.28},
+  {w:5, end:"11 Oct",ph:"A",eat:1807,kg:63.03},{w:6, end:"18 Oct",ph:"A",eat:1807,kg:62.79},
+  {w:7, end:"25 Oct",ph:"A",eat:1807,kg:62.55},{w:8, end:"1 Nov", ph:"A",eat:1807,kg:62.31},
+  {w:9, end:"8 Nov", ph:"A",eat:1807,kg:62.07},{w:10,end:"15 Nov",ph:"A",eat:1807,kg:61.83},
+  {w:11,end:"22 Nov",ph:"A",eat:1807,kg:61.59},{w:12,end:"29 Nov",ph:"A",eat:1807,kg:61.35},
+  {w:13,end:"6 Dec", ph:"A",eat:1807,kg:61.10},{w:14,end:"13 Dec",ph:"A",eat:1807,kg:60.86},
+  {w:15,end:"20 Dec",ph:"A",eat:1807,kg:60.62},{w:16,end:"27 Dec",ph:"A",eat:1807,kg:60.38},
+  {w:17,end:"3 Jan", ph:"A",eat:1807,kg:60.14},{w:18,end:"10 Jan",ph:"A",eat:1807,kg:59.90}];
 var PLAN_KG=[64.00].concat(PROJ.map(function(p){return p.kg;}));
-var START=new Date(2026,7,10), TOTAL=84;
+var START=new Date(2026,8,7), TOTAL=126, WEEKS=TOTAL/7, LAST=PLAN_KG.length-1;
 
 function iso(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
 function parseISO(s){var a=s.split("-");return new Date(+a[0],+a[1]-1,+a[2]);}
 function dayIndex(d){return Math.round((d-START)/86400000);}
 function shortDate(d){return d.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];}
-function planAtDay(x){ if(x<=0)return PLAN_KG[0]; if(x>=TOTAL)return PLAN_KG[12];
+function planAtDay(x){ if(x<=0)return PLAN_KG[0]; if(x>=TOTAL)return PLAN_KG[LAST];
   var w=x/7,i=Math.floor(w); return PLAN_KG[i]+(PLAN_KG[i+1]-PLAN_KG[i])*(w-i); }
 
 /* storage — never throws */
@@ -395,9 +398,9 @@ function trend(list){
 }
 
 var now=new Date();
-var wn=(function(){var d=Math.floor((now-START)/86400000);return d<0?0:Math.min(12,Math.floor(d/7)+1);})();
+var wn=(function(){var d=Math.floor((now-START)/86400000);return d<0?0:Math.min(WEEKS,Math.floor(d/7)+1);})();
 var todayIdx=(now.getDay()+6)%7, sel=todayIdx;
-function phaseOf(w){ return w<=0?"A":PROJ[w-1].ph; }
+function phaseOf(w){ return PROJ[(w<=0?1:w)-1].ph; }
 
 /* ---- tabs ---- */
 var TABS=["today","weight","plan","body"];
@@ -485,9 +488,8 @@ function drawWeek(ph){
 }
 
 /* ---- phases ---- */
-[["Phase A · weeks 1–4","1,707","10 Aug – 6 Sep","~0.33 kg/wk. Moderate cut while the 10 k build is still on.",false],
- ["Race week · week 5","2,171","7 – 13 Sep","Maintenance. B2B is Sunday 13th — you don't cut into a race.",true],
- ["Phase B · weeks 6–12","1,621","14 Sep – 1 Nov","~0.41 kg/wk. You cross 60.0 kg around 29 Oct.",false]
+[["Race week · week 1","2,171","7 – 13 Sep","Maintenance. B2B is Sunday 13th — you don't cut into a race.",true],
+ ["The cut · weeks 2–18","1,807","14 Sep – 10 Jan","~0.24 kg/wk, nothing under 1,750 on any day. You cross 60.0 kg in the last week.",false]
 ].forEach(function(p){
   var d=document.createElement("div"); d.className="ph"+(p[4]?" race":"");
   d.innerHTML="<h3>"+p[0]+"</h3><div class='big'>"+p[1]+" <span style='font-size:13px;font-weight:500;color:var(--ink2)'>kcal/day</span></div><p>"+p[2]+" · "+p[3]+"</p>";
@@ -512,12 +514,12 @@ function drawChart(list,roll){
   }
   svg.appendChild(el("line",{x1:ML,x2:W-MR,y1:Y(60),y2:Y(60),stroke:"var(--line)","stroke-width":1.5,"stroke-dasharray":"1 3"}));
   var gl=el("text",{x:ML+4,y:Y(60)-5,fill:"var(--ink2)","font-size":9.5,"font-weight":600}); gl.textContent="goal 60.0"; svg.appendChild(gl);
-  var rx=X(35);
+  var rx=X(6);
   svg.appendChild(el("line",{x1:rx,x2:rx,y1:MT,y2:H-MB,stroke:"var(--warn)","stroke-width":1.5,"stroke-dasharray":"3 3"}));
   var rl=el("text",{x:rx+4,y:MT+9,fill:"var(--warn)","font-size":9.5,"font-weight":700}); rl.textContent="B2B"; svg.appendChild(rl);
   var pd=PLAN_KG.map(function(kg,i){return (i?"L":"M")+X(i*7).toFixed(1)+" "+Y(kg).toFixed(1);}).join(" ");
   svg.appendChild(el("path",{d:pd,fill:"none",stroke:"var(--line)","stroke-width":2,"stroke-dasharray":"5 4","stroke-linecap":"round"}));
-  var pl=el("text",{x:X(84)+4,y:Y(PLAN_KG[12])+4,fill:"var(--ink2)","font-size":9.5,"font-weight":600}); pl.textContent="plan"; svg.appendChild(pl);
+  var pl=el("text",{x:X(TOTAL)-2,y:Y(PLAN_KG[LAST])-7,"text-anchor":"end",fill:"var(--ink2)","font-size":9.5,"font-weight":600}); pl.textContent="plan"; svg.appendChild(pl);
   list.forEach(function(e){ if(e.x>=-1&&e.x<=TOTAL+1)
     svg.appendChild(el("circle",{cx:X(e.x),cy:Y(e.kg),r:2.6,fill:"var(--low)"})); });
   if(roll.length>1){
@@ -526,10 +528,10 @@ function drawChart(list,roll){
     var last=roll[roll.length-1];
     svg.appendChild(el("circle",{cx:X(last.x),cy:Y(last.kg),r:4.5,fill:"var(--pro)",stroke:"var(--surface-1)","stroke-width":2}));
     var lt=el("text",{x:X(last.x),y:Y(last.kg)-9,"text-anchor":last.x>70?"end":"middle",fill:"var(--ink)","font-size":10,"font-weight":670});
-    lt.textContent=last.kg.toFixed(1); svg.appendChild(lt);
+    lt.textContent=last.kg.toFixed(2); svg.appendChild(lt);
   }
-  ["10 Aug","6 Sep","4 Oct","1 Nov"].forEach(function(lb,j){
-    var x=[0,28,56,84][j];
+  ["7 Sep","19 Oct","30 Nov","10 Jan"].forEach(function(lb,j){
+    var x=[0,42,84,125][j];
     var t=el("text",{x:X(x),y:H-MB+14,"text-anchor":j===0?"start":(j===3?"end":"middle"),fill:"var(--muted)","font-size":9.5});
     t.textContent=lb; svg.appendChild(t);
   });
@@ -548,8 +550,8 @@ function hover(ev){
   var y=rl?rl.kg:(act?act.kg:plan);
   cur.setAttribute("x1",X(day)); cur.setAttribute("x2",X(day)); cur.setAttribute("opacity",1);
   hd.setAttribute("cx",X(day)); hd.setAttribute("cy",Y(y)); hd.setAttribute("opacity",1);
-  var html=shortDate(d)+" · wk "+Math.min(12,Math.floor(day/7)+1)+"<br>Plan <b>"+plan.toFixed(2)+"</b>";
-  if(act) html+="<br>Weighed <b>"+act.kg.toFixed(1)+"</b>";
+  var html=shortDate(d)+" · wk "+Math.min(WEEKS,Math.floor(day/7)+1)+"<br>Plan <b>"+plan.toFixed(2)+"</b>";
+  if(act) html+="<br>Weighed <b>"+act.kg.toFixed(2)+"</b>";
   if(rl)  html+="<br>7-day avg <b>"+rl.kg.toFixed(2)+"</b>";
   tip.innerHTML=html;
   tip.style.left=(X(day)/W*r.width)+"px"; tip.style.top=(Y(y)/H*r.height)+"px"; tip.style.opacity=1;
@@ -589,7 +591,7 @@ function refresh(){
   var v=document.getElementById("verdict"); v.className="verdict";
   var lastX=list.length?list[list.length-1].x:-1;
   var dataWk=lastX<0?0:Math.floor(lastX/7)+1;
-  var raceWk=tr&&lastX>=28&&(lastX-tr.span+1)<=34;
+  var raceWk=tr&&(lastX-tr.span+1)<=6;
   if(!tr){
     v.innerHTML="<b>Keep logging</b>Needs about two weeks of weights before it can say anything useful."+
       (list.length?" "+list.length+" so far.":"");
@@ -600,11 +602,11 @@ function refresh(){
   } else {
     var loss=-tr.perWeek, se=tr.sePerWeek;
     var rate=loss.toFixed(2)+" ± "+se.toFixed(2)+" kg/wk over "+tr.span+" days";
-    if(loss+se<0.2){ v.classList.add("down");
-      v.innerHTML="<b>Drop 150 kcal/day</b>"+rate+" — clearly under the floor. Take it off the BIG days. Don't touch protein.";
-    } else if(loss-se>0.6){ v.classList.add("up");
-      v.innerHTML="<b>Add 150 kcal/day</b>"+rate+" — faster than 0.6 is where lean mass goes with it. Add carbs around training.";
-    } else if(loss-se>=0.2&&loss+se<=0.6){ v.classList.add("hold");
+    if(loss+se<0.15){ v.classList.add("down");
+      v.innerHTML="<b>Add movement, not less food</b>"+rate+" — too slow, but you're already on the 1,750 floor. Add a 30-minute walk on LOW days, or flatten BIG and MID down to 1,750. Protein stays at 130 g.";
+    } else if(loss-se>0.40){ v.classList.add("up");
+      v.innerHTML="<b>Add 150 kcal/day</b>"+rate+" — faster than 0.40 is where lean mass goes with it. Add carbs around training.";
+    } else if(loss-se>=0.15&&loss+se<=0.40){ v.classList.add("hold");
       v.innerHTML="<b>Hold — this is working</b>"+rate+", solidly in the band. Change nothing.";
     } else { v.classList.add("hold");
       v.innerHTML="<b>Hold — not enough signal yet</b>"+rate+". The error bar still straddles the line, so changing now is chasing noise.";
@@ -614,7 +616,7 @@ function refresh(){
   var eb=document.getElementById("entbody"); eb.innerHTML="";
   list.slice().reverse().forEach(function(e){
     var tr2=document.createElement("tr");
-    tr2.innerHTML="<td>"+shortDate(e.d)+"</td><td class='r'><strong>"+e.kg.toFixed(1)+"</strong> kg</td><td class='r' style='width:32px'></td>";
+    tr2.innerHTML="<td>"+shortDate(e.d)+"</td><td class='r'><strong>"+e.kg.toFixed(2)+"</strong> kg</td><td class='r' style='width:32px'></td>";
     var b=document.createElement("button"); b.className="del"; b.type="button"; b.textContent="×";
     b.setAttribute("aria-label","Delete "+e.date);
     b.addEventListener("click",function(){ delete mem[e.date]; saveLog(); refresh(); });
@@ -643,8 +645,8 @@ document.getElementById("w-save").addEventListener("click",function(){
   var v=parseFloat(kgIn.value);
   if(!(v>=40&&v<=120)){ say("Enter a weight between 40 and 120 kg."); return; }
   if(!dtIn.value){ say("Pick a date."); return; }
-  loadLog(); mem[dtIn.value]=Math.round(v*10)/10; saveLog(); kgIn.value="";
-  say(canPersist?"Saved "+(Math.round(v*10)/10).toFixed(1)+" kg for "+shortDate(parseISO(dtIn.value))+"."
+  loadLog(); mem[dtIn.value]=Math.round(v*100)/100; saveLog(); kgIn.value="";
+  say(canPersist?"Saved "+(Math.round(v*100)/100).toFixed(2)+" kg for "+shortDate(parseISO(dtIn.value))+"."
                 :"Saved for this session only — this browser blocks storage. Use the backup code.");
   refresh();
 });
@@ -670,8 +672,8 @@ document.getElementById("theme").addEventListener("click",function(){
   document.documentElement.setAttribute("data-theme",dark?"light":"dark");
 });
 
-if(wn>0) document.getElementById("stamp").textContent="Week "+wn+" of 12 · "+
-  (phaseOf(wn)==="R"?"race week":"Phase "+phaseOf(wn))+" · "+PROJ[wn-1].kg.toFixed(1)+" kg by "+PROJ[wn-1].end;
+if(wn>0) document.getElementById("stamp").textContent="Week "+wn+" of "+WEEKS+" · "+
+  (phaseOf(wn)==="R"?"race week":"the cut")+" · "+PROJ[wn-1].kg.toFixed(1)+" kg by "+PROJ[wn-1].end;
 
 renderToday(); refresh();
 window.__fuel={entries:entries,rolling:rolling,trend:trend,planAtDay:planAtDay,tab:showTab,
