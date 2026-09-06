@@ -207,7 +207,7 @@
   <h2>Where you are</h2>
   <div class="card">
     <div class="prog"><i id="prog-fill" style="width:0%"></i></div>
-    <div class="plabels"><span>64.0 start</span><span id="prog-now">—</span><span>60.0 goal</span></div>
+    <div class="plabels"><span id="prog-start">—</span><span id="prog-now">—</span><span>60.0 goal</span></div>
   </div>
 </section>
 
@@ -240,7 +240,7 @@
         <svg id="chart" viewBox="0 0 340 190" role="img" aria-label="Your logged weight against the plan line, which holds at 64.0 kg through race week and then falls to 59.9 kg by 10 January."></svg>
         <div class="tip" id="tip"></div>
       </div>
-      <figcaption>Judge yourself against the average line, never a single morning.</figcaption>
+      <figcaption id="capt">Judge yourself against the average line, never a single morning.</figcaption>
     </figure>
     <details><summary id="ent-sum">Entries</summary>
       <div class="entries"><table><tbody id="entbody"></tbody></table></div>
@@ -347,23 +347,45 @@ var RACE=[{k:2050,p:125,f:60,c:253},{k:2000,p:125,f:60,c:240},{k:2050,p:125,f:60
 var RACE_LBL=["Taper","Taper","Taper","Load","Carb load","Carb load","Race day"];
 var TIERCOL={BIG:"var(--big)",MID:"var(--mid)",LOW:"var(--low)"};
 
-var PROJ=[
-  {w:1, end:"13 Sep",ph:"R",eat:2171,kg:64.00},{w:2, end:"20 Sep",ph:"A",eat:1807,kg:63.76},
-  {w:3, end:"27 Sep",ph:"A",eat:1807,kg:63.52},{w:4, end:"4 Oct", ph:"A",eat:1807,kg:63.28},
-  {w:5, end:"11 Oct",ph:"A",eat:1807,kg:63.03},{w:6, end:"18 Oct",ph:"A",eat:1807,kg:62.79},
-  {w:7, end:"25 Oct",ph:"A",eat:1807,kg:62.55},{w:8, end:"1 Nov", ph:"A",eat:1807,kg:62.31},
-  {w:9, end:"8 Nov", ph:"A",eat:1807,kg:62.07},{w:10,end:"15 Nov",ph:"A",eat:1807,kg:61.83},
-  {w:11,end:"22 Nov",ph:"A",eat:1807,kg:61.59},{w:12,end:"29 Nov",ph:"A",eat:1807,kg:61.35},
-  {w:13,end:"6 Dec", ph:"A",eat:1807,kg:61.10},{w:14,end:"13 Dec",ph:"A",eat:1807,kg:60.86},
-  {w:15,end:"20 Dec",ph:"A",eat:1807,kg:60.62},{w:16,end:"27 Dec",ph:"A",eat:1807,kg:60.38},
-  {w:17,end:"3 Jan", ph:"A",eat:1807,kg:60.14},{w:18,end:"10 Jan",ph:"A",eat:1807,kg:59.90}];
-var PLAN_KG=[64.00].concat(PROJ.map(function(p){return p.kg;}));
-var START=new Date(2026,8,7), TOTAL=126, WEEKS=TOTAL/7, LAST=PLAN_KG.length-1;
+var START=new Date(2026,8,7), GOAL=60.0, SEED_KG=64.00, ANCHOR_DAY=13;
+
+/* Weekly numbers are derived from WEEK/TIERS, so editing a session keeps the plan honest. */
+var WK_BURN=WEEK.reduce(function(s,r){return s+r.burn;},0);
+var WK_EAT =WEEK.reduce(function(s,r){return s+TIERS.A[r.tier].k;},0);
+var RATE=(WK_BURN-WK_EAT)/7700;                        /* kg lost per cutting week */
+var CUT_EAT=Math.round(WK_EAT/7);
+var RACE_EAT=Math.round(RACE.reduce(function(s,r){return s+r.k;},0)/7);
+
+/* The plan's SHAPE is fixed: flat through race week, then RATE kg/wk. Only its vertical
+   offset is set by ANCHOR, and only the number of weeks follows from where that lands. */
+function shape(day){ var w=day/7; return w<=1?0:-(w-1)*RATE; }
+var ANCHOR={kg:SEED_KG,day:0,firm:false}, PLAN_KG=[], PROJ=[], TOTAL=126, WEEKS=18, LAST=18;
+function rebuild(){
+  var off=ANCHOR.kg-shape(ANCHOR.day), w=1;
+  while(off+shape(7*w)>GOAL && w<52) w++;
+  WEEKS=w; TOTAL=w*7; LAST=w; PLAN_KG=[]; PROJ=[];
+  for(var i=0;i<=w;i++) PLAN_KG.push(off+shape(7*i));
+  for(var k=1;k<=w;k++) PROJ.push({w:k,
+    end:shortDate(new Date(START.getTime()+(7*k-1)*86400000)),
+    ph:k===1?"R":"A", eat:k===1?RACE_EAT:CUT_EAT, kg:PLAN_KG[k]});
+}
+/* Anchor to the first 7-day average that lands clear of race week, then hold it.
+   Before that the line is provisional: tethered to whatever real data exists, and said so. */
+function setAnchor(list,roll){
+  for(var i=0;i<roll.length;i++) if(roll[i].x>=ANCHOR_DAY){
+    ANCHOR={kg:roll[i].kg,day:roll[i].x,firm:true}; rebuild(); return; }
+  var pt=roll.length?roll[roll.length-1]:(list.length?list[list.length-1]:null);
+  ANCHOR=pt?{kg:pt.kg,day:pt.x,firm:false}:{kg:SEED_KG,day:0,firm:false};
+  rebuild();
+}
 
 function iso(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
 function parseISO(s){var a=s.split("-");return new Date(+a[0],+a[1]-1,+a[2]);}
 function dayIndex(d){return Math.round((d-START)/86400000);}
 function shortDate(d){return d.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];}
+function longDate(d){return shortDate(d)+" "+d.getFullYear();}
+function endDate(){return new Date(START.getTime()+(TOTAL-1)*86400000);}
+rebuild();
 function planAtDay(x){ if(x<=0)return PLAN_KG[0]; if(x>=TOTAL)return PLAN_KG[LAST];
   var w=x/7,i=Math.floor(w); return PLAN_KG[i]+(PLAN_KG[i+1]-PLAN_KG[i])*(w-i); }
 
@@ -488,13 +510,22 @@ function drawWeek(ph){
 }
 
 /* ---- phases ---- */
-[["Race week · week 1","2,171","7 – 13 Sep","Maintenance. B2B is Sunday 13th — you don't cut into a race.",true],
- ["The cut · weeks 2–18","1,807","14 Sep – 10 Jan","~0.24 kg/wk, nothing under 1,750 on any day. You cross 60.0 kg in the last week.",false]
-].forEach(function(p){
-  var d=document.createElement("div"); d.className="ph"+(p[4]?" race":"");
-  d.innerHTML="<h3>"+p[0]+"</h3><div class='big'>"+p[1]+" <span style='font-size:13px;font-weight:500;color:var(--ink2)'>kcal/day</span></div><p>"+p[2]+" · "+p[3]+"</p>";
-  document.getElementById("phases").appendChild(d);
-});
+function drawPhases(){
+  var box=document.getElementById("phases"); box.innerHTML="";
+  var cutFrom=shortDate(new Date(START.getTime()+7*86400000)), cutTo=shortDate(endDate());
+  var tail=ANCHOR.firm
+    ? "You cross "+GOAL.toFixed(1)+" kg in the last week."
+    : "Provisional — the line sets itself from your first clean 7-day average.";
+  [["Race week · week 1",RACE_EAT.toLocaleString(),shortDate(START)+" – "+shortDate(new Date(START.getTime()+6*86400000)),
+    "Maintenance. B2B is Sunday 13th — you don't cut into a race.",true],
+   ["The cut · weeks 2–"+WEEKS,CUT_EAT.toLocaleString(),cutFrom+" – "+cutTo,
+    "~"+RATE.toFixed(2)+" kg/wk, nothing under 1,750 on any day. "+tail,false]
+  ].forEach(function(p){
+    var d=document.createElement("div"); d.className="ph"+(p[4]?" race":"");
+    d.innerHTML="<h3>"+p[0]+"</h3><div class='big'>"+p[1]+" <span style='font-size:13px;font-weight:500;color:var(--ink2)'>kcal/day</span></div><p>"+p[2]+" · "+p[3]+"</p>";
+    box.appendChild(d);
+  });
+}
 
 /* ---- chart ---- */
 var W=340,H=190,ML=28,MR=26,MT=12,MB=24;
@@ -505,7 +536,7 @@ function X(x){return ML+Math.max(0,Math.min(TOTAL,x))*(W-ML-MR)/TOTAL;}
 function Y(v){return MT+(maxY-v)*(H-MT-MB)/(maxY-minY);}
 function drawChart(list,roll){
   while(svg.firstChild) svg.removeChild(svg.firstChild);
-  var vals=[59.6,64.2].concat(list.map(function(e){return e.kg;}));
+  var vals=[GOAL-0.4].concat(PLAN_KG).concat(list.map(function(e){return e.kg;}));
   minY=Math.min.apply(null,vals)-0.3; maxY=Math.max.apply(null,vals)+0.3;
   for(var v=Math.ceil(minY);v<=Math.floor(maxY);v++){
     svg.appendChild(el("line",{x1:ML,x2:W-MR,y1:Y(v),y2:Y(v),stroke:"var(--grid)","stroke-width":1}));
@@ -518,8 +549,10 @@ function drawChart(list,roll){
   svg.appendChild(el("line",{x1:rx,x2:rx,y1:MT,y2:H-MB,stroke:"var(--warn)","stroke-width":1.5,"stroke-dasharray":"3 3"}));
   var rl=el("text",{x:rx+4,y:MT+9,fill:"var(--warn)","font-size":9.5,"font-weight":700}); rl.textContent="B2B"; svg.appendChild(rl);
   var pd=PLAN_KG.map(function(kg,i){return (i?"L":"M")+X(i*7).toFixed(1)+" "+Y(kg).toFixed(1);}).join(" ");
-  svg.appendChild(el("path",{d:pd,fill:"none",stroke:"var(--line)","stroke-width":2,"stroke-dasharray":"5 4","stroke-linecap":"round"}));
-  var pl=el("text",{x:X(TOTAL)-2,y:Y(PLAN_KG[LAST])-7,"text-anchor":"end",fill:"var(--ink2)","font-size":9.5,"font-weight":600}); pl.textContent="plan"; svg.appendChild(pl);
+  svg.appendChild(el("path",{d:pd,fill:"none",stroke:"var(--line)","stroke-width":ANCHOR.firm?2:1.5,
+    "stroke-dasharray":ANCHOR.firm?"5 4":"2 4","stroke-linecap":"round",opacity:ANCHOR.firm?1:0.55}));
+  var pl=el("text",{x:X(TOTAL)-2,y:Y(PLAN_KG[LAST])-7,"text-anchor":"end",fill:"var(--ink2)","font-size":9.5,"font-weight":600,opacity:ANCHOR.firm?1:0.7});
+  pl.textContent=ANCHOR.firm?"plan":"plan · provisional"; svg.appendChild(pl);
   list.forEach(function(e){ if(e.x>=-1&&e.x<=TOTAL+1)
     svg.appendChild(el("circle",{cx:X(e.x),cy:Y(e.kg),r:2.6,fill:"var(--low)"})); });
   if(roll.length>1){
@@ -527,13 +560,12 @@ function drawChart(list,roll){
     svg.appendChild(el("path",{d:rd,fill:"none",stroke:"var(--pro)","stroke-width":2.5,"stroke-linecap":"round","stroke-linejoin":"round"}));
     var last=roll[roll.length-1];
     svg.appendChild(el("circle",{cx:X(last.x),cy:Y(last.kg),r:4.5,fill:"var(--pro)",stroke:"var(--surface-1)","stroke-width":2}));
-    var lt=el("text",{x:X(last.x),y:Y(last.kg)-9,"text-anchor":last.x>70?"end":"middle",fill:"var(--ink)","font-size":10,"font-weight":670});
+    var lt=el("text",{x:X(last.x),y:Y(last.kg)-9,"text-anchor":last.x>TOTAL*0.8?"end":"middle",fill:"var(--ink)","font-size":10,"font-weight":670});
     lt.textContent=last.kg.toFixed(2); svg.appendChild(lt);
   }
-  ["7 Sep","19 Oct","30 Nov","10 Jan"].forEach(function(lb,j){
-    var x=[0,42,84,125][j];
+  [0,Math.round(TOTAL/3),Math.round(TOTAL*2/3),TOTAL-1].forEach(function(x,j){
     var t=el("text",{x:X(x),y:H-MB+14,"text-anchor":j===0?"start":(j===3?"end":"middle"),fill:"var(--muted)","font-size":9.5});
-    t.textContent=lb; svg.appendChild(t);
+    t.textContent=shortDate(new Date(START.getTime()+x*86400000)); svg.appendChild(t);
   });
   cur=el("line",{x1:0,x2:0,y1:MT,y2:H-MB,stroke:"var(--line)","stroke-width":1,opacity:0});
   hd=el("circle",{r:5,fill:"var(--pro)",stroke:"var(--surface-1)","stroke-width":2,opacity:0});
@@ -550,7 +582,7 @@ function hover(ev){
   var y=rl?rl.kg:(act?act.kg:plan);
   cur.setAttribute("x1",X(day)); cur.setAttribute("x2",X(day)); cur.setAttribute("opacity",1);
   hd.setAttribute("cx",X(day)); hd.setAttribute("cy",Y(y)); hd.setAttribute("opacity",1);
-  var html=shortDate(d)+" · wk "+Math.min(WEEKS,Math.floor(day/7)+1)+"<br>Plan <b>"+plan.toFixed(2)+"</b>";
+  var html=shortDate(d)+" · wk "+Math.min(WEEKS,Math.floor(day/7)+1)+"<br>"+(ANCHOR.firm?"Plan":"Plan (prov.)")+" <b>"+plan.toFixed(2)+"</b>";
   if(act) html+="<br>Weighed <b>"+act.kg.toFixed(2)+"</b>";
   if(rl)  html+="<br>7-day avg <b>"+rl.kg.toFixed(2)+"</b>";
   tip.innerHTML=html;
@@ -565,6 +597,7 @@ cw.addEventListener("touchend",leave);
 function setTile(id,v,d){ document.getElementById(id).textContent=v; document.getElementById(id+"-d").textContent=d; }
 function refresh(){
   var list=entries(), roll=rolling(list);
+  setAnchor(list,roll); drawPhases(); updateStamp();
   drawChart(list,roll);
 
   if(roll.length){ var l=roll[roll.length-1];
@@ -577,16 +610,24 @@ function refresh(){
   else setTile("s-trend","—","needs ~2 weeks");
 
   var cur7 = roll.length ? roll[roll.length-1].kg : null;
-  if(cur7!==null){ var diff=cur7-planAtDay(roll[roll.length-1].x);
-    setTile("s-vs",(diff<=0?"−":"+")+Math.abs(diff).toFixed(2), diff<=0?"kg ahead of plan":"kg behind plan");
+  if(!ANCHOR.firm){
+    var setsOn=shortDate(new Date(START.getTime()+ANCHOR_DAY*86400000));
+    setTile("s-vs","—","line sets "+setsOn);
+  } else if(cur7!==null){ var diff=cur7-planAtDay(roll[roll.length-1].x);
+    if(Math.abs(diff)<0.005) setTile("s-vs","0.00","dead on the line");
+    else setTile("s-vs",(diff<0?"−":"+")+Math.abs(diff).toFixed(2), diff<0?"kg ahead of plan":"kg behind plan");
   } else setTile("s-vs","—","—");
 
-  // progress bar
-  var shown = cur7!==null ? cur7 : 64.0;
-  var pct = Math.max(0,Math.min(100,(64-shown)/4*100));
+  // progress bar — measured from the anchor, not a number nobody weighed
+  var A=ANCHOR.kg, shown = cur7!==null ? cur7 : A;
+  var pct = Math.max(0,Math.min(100,(A-shown)/Math.max(0.01,A-GOAL)*100));
   document.getElementById("prog-fill").style.width=pct.toFixed(1)+"%";
+  document.getElementById("prog-start").textContent=A.toFixed(2)+(ANCHOR.firm?" start":" prov.");
   document.getElementById("prog-now").textContent =
-    cur7!==null ? shown.toFixed(1)+" kg · "+Math.round(pct)+"%" : "log a weight";
+    cur7!==null ? shown.toFixed(2)+" kg · "+Math.round(pct)+"%" : "log a weight";
+  document.getElementById("capt").textContent = ANCHOR.firm
+    ? "Plan line anchored to your "+A.toFixed(2)+" kg average on "+shortDate(new Date(START.getTime()+ANCHOR.day*86400000))+". Judge yourself against the average line, never a single morning."
+    : "The plan line is provisional until your first clean 7-day average on "+shortDate(new Date(START.getTime()+ANCHOR_DAY*86400000))+" — race-week carbs would otherwise anchor it too high.";
 
   var v=document.getElementById("verdict"); v.className="verdict";
   var lastX=list.length?list[list.length-1].x:-1;
@@ -672,8 +713,14 @@ document.getElementById("theme").addEventListener("click",function(){
   document.documentElement.setAttribute("data-theme",dark?"light":"dark");
 });
 
-if(wn>0) document.getElementById("stamp").textContent="Week "+wn+" of "+WEEKS+" · "+
-  (phaseOf(wn)==="R"?"race week":"the cut")+" · "+PROJ[wn-1].kg.toFixed(1)+" kg by "+PROJ[wn-1].end;
+function updateStamp(){
+  wn=(function(){var d=Math.floor((now-START)/86400000);return d<0?0:Math.min(WEEKS,Math.floor(d/7)+1);})();
+  var s=document.getElementById("stamp");
+  s.textContent = wn>0
+    ? "Week "+wn+" of "+WEEKS+" · "+(phaseOf(wn)==="R"?"race week":"the cut")+" · "+
+      PROJ[wn-1].kg.toFixed(1)+" kg by "+PROJ[wn-1].end
+    : longDate(START)+" – "+longDate(endDate());
+}
 
 renderToday(); refresh();
 window.__fuel={entries:entries,rolling:rolling,trend:trend,planAtDay:planAtDay,tab:showTab,
